@@ -14,7 +14,7 @@ class MainPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_
                 HomeFragment()
             }
             1 -> {
-                HomeFragment()
+                LibraryFragment()
             }
             else -> {
                 HomeFragment()
@@ -22,5 +22,5 @@ class MainPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_
         }
     }
 
-    override fun getCount(): Int = 1
+    override fun getCount(): Int = 2
 }

@@ -18,7 +18,7 @@ fun bindLoadImage(view: AppCompatImageView, url: String) {
 @BindingAdapter("pagerAdapter")
 fun bindPagerAdapter(view: ViewPager, adapter: PagerAdapter) {
     view.adapter = adapter
-    view.offscreenPageLimit = 3
+    view.offscreenPageLimit = 2
 }
 
 @BindingAdapter("bindNavigation")
