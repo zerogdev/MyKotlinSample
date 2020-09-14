@@ -36,7 +36,21 @@ class LibraryFragment : Fragment() {
         viewModel = ViewModelProvider(this, LibraryModelFactory()).get(LibraryViewModel::class.java)
 //        viewModel.test()
 //        viewModel.testCancel()
-        viewModel.testSuspendCancellableCoroutine()
+//        viewModel.testSuspendCancellableCoroutine()
+//        viewModel.testNonCancellableCoroutine()
+//        viewModel.testSequence()
+//        viewModel.testAsync()
+//        viewModel.testAsyncGlobalScope()
+//        viewModel.testStructuredConcurrencyWithAsync()
+//        viewModel.testFailedConcurrentSum()
+//        viewModel.testLaunch()
+//        viewModel.testLaunchUnconfined()
+//        viewModel.testLog()
+//        viewModel.testNewSingleThreadContext()
+//        viewModel.testCoroutineContext()
+//        viewModel.testChildrenCoroutine()
+//        viewModel.testParentalResponsibilities()
+        viewModel.testDebugLog()
     }
 }
 
