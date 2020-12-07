@@ -34,7 +34,9 @@ class LibraryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this, LibraryModelFactory()).get(LibraryViewModel::class.java)
+        viewModel.flowTest()
 //        viewModel.test()
+//        viewModel.test2()
 //        viewModel.testCancel()
 //        viewModel.testSuspendCancellableCoroutine()
 //        viewModel.testNonCancellableCoroutine()
@@ -50,7 +52,7 @@ class LibraryFragment : Fragment() {
 //        viewModel.testCoroutineContext()
 //        viewModel.testChildrenCoroutine()
 //        viewModel.testParentalResponsibilities()
-        viewModel.testDebugLog()
+//        viewModel.testDebugLog()
     }
 }
 

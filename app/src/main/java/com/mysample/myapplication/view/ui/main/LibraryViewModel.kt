@@ -3,21 +3,81 @@ package com.mysample.myapplication.view.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 import kotlin.coroutines.coroutineContext
 import kotlin.system.measureTimeMillis
 
 class LibraryViewModel : ViewModel() {
 
-    fun test() {
-        Timber.d(">test start")
+    fun test2() {
         viewModelScope.launch {
-            Timber.d(">launch start (curThread=${Thread.currentThread()})")
-            delay(5000)
-            fetchDocs()
-            Timber.d(">launch end")
+            Timber.d(">test 1")
+            val s1 = s1()
+            Timber.d(">test 2")
+            val s2 = s2()
+            Timber.d(">test 3 - ${s1} ${s2}")
         }
-        Timber.d(">test end")
+        Timber.d(">test 4")
+        for ( i in 0 until 100000000000) {
+
+        }
+        Timber.d(">test 5")
+    }
+
+    suspend fun s1() : String {
+        Timber.d(">test s1 1")
+        delay(500)
+        Timber.d(">test s1 2")
+        return "s1"
+    }
+
+    suspend fun s2() : String {
+        Timber.d(">test s2 1")
+        delay(500)
+        Timber.d(">test s2 2")
+        return "s2"
+    }
+
+    fun test() {
+        Timber.d(">test start (curThread=${Thread.currentThread()})")
+
+        //async 로 코루틴 생성
+//        val d = viewModelScope.async {
+//            Timber.d(">async start (curThread=${Thread.currentThread()})")
+////            delay(100)
+//            for ( i in 0 until 100000) {
+//                Timber.d(">async starting... (curThread=${Thread.currentThread()})")
+//            }
+//            Timber.d(">async end (curThread=${Thread.currentThread()})")
+//        }
+
+        //launch 로 코루틴 생ㅅㅇ
+        val d2 = viewModelScope.launch {
+            Timber.d(">launch start (curThread=${Thread.currentThread()})")
+//            delay(5000)
+            val d = async {
+                Timber.d(">async start (curThread=${Thread.currentThread()})")
+//            delay(100)
+                for ( i in 0 until 100000) {
+                    Timber.d(">async starting... (curThread=${Thread.currentThread()})")
+                }
+                Timber.d(">async end (curThread=${Thread.currentThread()})")
+            }
+
+            for ( i in 0 until 100000) {
+
+            }
+            fetchDocs()
+            Timber.d(">launch end (curThread=${Thread.currentThread()})")
+        }
+//        Timber.d(">test roof start (curThread=${Thread.currentThread()})")
+//        for ( i in 0 until 100000) {
+//            Timber.d(">test roof starting... (curThread=${Thread.currentThread()})")
+//        }
+        Timber.d(">test end (curThread=${Thread.currentThread()})")
     }
 
     suspend fun fetchDocs() {
@@ -29,7 +89,7 @@ class LibraryViewModel : ViewModel() {
     suspend fun get(url:String) = withContext(Dispatchers.IO) {
         Timber.d(">delay start (curThread=${Thread.currentThread()})")
         delay(5000)
-        Timber.d(">delay end")
+        Timber.d(">delay end (curThread=${Thread.currentThread()})")
     }
 
     fun testCancel() {
@@ -45,6 +105,15 @@ class LibraryViewModel : ViewModel() {
             job.cancel() // cancels the job
             job.join() // waits for job's completion
             Timber.d("main: Now I can quit.")
+        }
+
+        val d = viewModelScope.async {
+            Timber.d(">async start (curThread=${Thread.currentThread()})")
+        }
+        if (d.isCancelled) {
+            d.getCompletionExceptionOrNull()
+        } else {
+            d.getCompleted()
         }
     }
 
@@ -119,6 +188,7 @@ class LibraryViewModel : ViewModel() {
 
         viewModelScope.launch {
             val time = measureTimeMillis {
+                //보통 생성 즉시 바로 실행이지만, LAZY로 하면 바로 실행하지않고 start()/join() 할때 실행
                 val one = async(start = CoroutineStart.LAZY) { doSomethingUsefulOne() }
                 val two = async(start = CoroutineStart.LAZY) { doSomethingUsefulTwo() }
                 // some computation
@@ -341,4 +411,27 @@ class LibraryViewModel : ViewModel() {
             log("The answer for v1 / v2 = ${v1.await() / v2.await()}")
         }
     }
+
+    fun error() {
+        viewModelScope.launch {
+
+        }.invokeOnCompletion { cause -> cause?.let {  } }
+    }
+
+    fun flowTest() {
+        val f : Flow<Int> = flow {
+            for (i in 1..100) {
+                emit(i)
+                log("emit $i")
+            }
+        }
+
+        viewModelScope.launch {
+            f.collect {
+                log("collect $it")
+            }
+        }
+    }
+
+
 }
